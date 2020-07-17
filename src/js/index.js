@@ -1,4 +1,5 @@
 import Search from './models/Search';
+import Recipe from './models/Recipe'; 
 import * as searchView from './views/SearchView';
 import { elements, renderLoader, clearLoader } from './views/base';
 
@@ -9,6 +10,8 @@ Global state of the app
 -Shopping list object
 -Liked recipes
 */
+
+// === SEARCH CONTROLLER == //
 
 const state = {}
 const controlSearch = async () => {
@@ -54,6 +57,11 @@ elements.searchResPages.addEventListener('click', e => {
     }
 })
 
+
+// == RECIPE CONTROLLER == // 
+const r = new Recipe(47746)
+r.getRecipe()
+console.log(r)
 
 
 
