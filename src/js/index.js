@@ -28,13 +28,20 @@ const controlSearch = async () => {
         searchView.clearResults()
         renderLoader(elements.searchRes)
 
-        // 4 - search for recipes
-        await state.search.getResults()
+        try{
 
-        // 5 - render results on UI
-        searchView.renderResults(state.search.result)
-        clearLoader()
-        
+            // 4 - search for recipes
+            await state.search.getResults()
+
+            // 5 - render results on UI
+            searchView.renderResults(state.search.result)
+            
+            
+        } catch (err) {
+            alert('Something wrong with the search'); 
+            clearLoader()
+        }
+
     } 
 
     // 2 - 
@@ -59,9 +66,43 @@ elements.searchResPages.addEventListener('click', e => {
 
 
 // == RECIPE CONTROLLER == // 
-const r = new Recipe(47746)
-r.getRecipe()
-console.log(r)
+
+const controlRecipe = async () => {
+    // get the id from the url
+    const id = window.location.hash.replace('#', '')
+    console.log(id)
+
+    if(id){
+        //prepare UI for changes
+
+        //create new recipe object
+        state.recipe = new Recipe(id)
+
+        try{
+            
+        //get recipe data
+        await state.recipe.getRecipe()
+
+        //calculate servings and time
+        state.recipe.calcServings()
+        state.recipe.calcTime() 
+
+        //render the recipe
+        console.log(state.recipe)
+        } catch (err) {
+            alert('Error during processing the recipe. ')
+        }
+
+    }
+
+}
+/* 
+window.addEventListener('hashchange', controlRecipe); 
+//everytime the hashchange the controlRecipe will be called
+window.addEventListener('load', controlRecipe)
+ */
+
+['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe))
 
 
 
